@@ -110,13 +110,19 @@
              {:dependencies [[figwheel "0.5.13"]
                              [figwheel-sidecar "0.5.13"]
                              [com.cemerick/piggieback "0.2.2"]
-                             [org.clojure/tools.nrepl "0.2.13"]]
+                             [org.clojure/tools.nrepl "0.2.13"]
+                             [midje "1.8.3"]]
               :plugins [[lein-figwheel "0.5.8"]
                         [lein-doo "0.1.6"]
-                        [lein-ancient "0.6.10"]]
+                        [lein-ancient "0.6.10"]
+                        [lein-midje "3.1.3"]]
               :source-paths ["dev"]
               :repl-options {:nrepl-middleware [cemerick.piggieback/wrap-cljs-repl]}
               :env {:env "dev"}}
+             :test
+             {:dependencies [[midje "1.8.3"]]
+              :plugins [[lein-midje "3.1.3"]]
+              :env {:env "test"}}
              :uberjar
              {:source-paths ^:replace ["src/clj" "src/cljc"]
               :prep-tasks ["compile" ["cljsbuild" "once" "min"]]

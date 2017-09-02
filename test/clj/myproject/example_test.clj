@@ -1,4 +1,4 @@
-(ns the-resellers.example-test
+(ns myproject.example-test
   (:require [clojure.test :refer :all]))
 
 (deftest example-passing-test

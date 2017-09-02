@@ -1,1 +1,1 @@
-web: java $JVM_OPTS -cp target/the-resellers.jar clojure.main -m the-resellers.server
+web: java $JVM_OPTS -cp target/myproject.jar clojure.main -m myproject.server

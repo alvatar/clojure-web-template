@@ -1,4 +1,4 @@
-(ns the-resellers.core-test
+(ns myproject.core-test
   (:require-macros [cljs.test :refer (is deftest testing)])
   (:require [cljs.test]))
 
