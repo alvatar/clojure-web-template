@@ -31,7 +31,7 @@
       (?reply-fn {:umatched-event-as-echoed-from-from-server event}))))
 
 (defmethod -event-msg-handler :user/store
-  [{:as ev-msg :keys [event idn ?data ring-req ?reply-fn send-fn]}]
+  [{:as ev-msg :keys [event id ?data ring-req ?reply-fn send-fn]}]
   (?reply-fn {:status :ok
               :received-data ?data}))
 

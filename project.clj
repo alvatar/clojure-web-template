@@ -5,25 +5,25 @@
             :url "http://www.eclipse.org/legal/epl-v10.html"}
 
   :dependencies [[org.clojure/clojure "1.8.0"]
-                 [org.clojure/clojurescript "1.9.293" :scope "provided"]
-                 [com.cognitect/transit-clj "0.8.297"]
+                 [org.clojure/clojurescript "1.9.908" :scope "provided"]
+                 [com.cognitect/transit-clj "0.8.300"]
                  [com.cognitect/transit-cljs "0.8.239"]
                  [environ "1.1.0"]
-                 [ring "1.5.0"]
-                 [ring/ring-defaults "0.2.1"]
-                 [bk/ring-gzip "0.1.1"]
+                 [ring "1.6.2"]
+                 [ring/ring-defaults "0.3.1"]
+                 [bk/ring-gzip "0.2.1"]
                  [ring.middleware.logger "0.5.0"]
-                 [aleph "0.4.2-alpha9"]
-                 [compojure "1.5.1"]
+                 [aleph "0.4.3"]
+                 [compojure "1.6.0"]
+                 [com.taoensso/encore "2.92.0"]
                  [com.taoensso/sente "1.11.0"]
-                 [com.taoensso/encore "2.88.0"]
-                 [com.taoensso/timbre "4.8.0"]
+                 [com.taoensso/timbre "4.10.0"]
                  ;; Database
-                 [org.clojure/java.jdbc "0.6.1"]
-                 [org.postgresql/postgresql "9.4.1212"]
+                 [org.clojure/java.jdbc "0.7.1"]
+                 [org.postgresql/postgresql "42.1.4"]
                  ;; Cljs
-                 [rum "0.10.7" :exclusions [cljsjs/react cljsjs/react-dom]]
-                 [cljs-react-material-ui "0.2.34"]]
+                 [rum "0.10.8" :exclusions [cljsjs/react cljsjs/react-dom]]
+                 [cljs-react-material-ui "0.2.48"]]
 
   :plugins [[lein-cljsbuild "1.1.3"]
             [lein-environ "1.0.3"]
@@ -107,12 +107,13 @@
          :target-path "resources/public/css"}
 
   :profiles {:dev
-             {:dependencies [[figwheel "0.5.8"]
-                             [figwheel-sidecar "0.5.8"]
-                             [com.cemerick/piggieback "0.2.1"]
-                             [org.clojure/tools.nrepl "0.2.12"]]
+             {:dependencies [[figwheel "0.5.13"]
+                             [figwheel-sidecar "0.5.13"]
+                             [com.cemerick/piggieback "0.2.2"]
+                             [org.clojure/tools.nrepl "0.2.13"]]
               :plugins [[lein-figwheel "0.5.8"]
-                        [lein-doo "0.1.6"]]
+                        [lein-doo "0.1.6"]
+                        [lein-ancient "0.6.10"]]
               :source-paths ["dev"]
               :repl-options {:nrepl-middleware [cemerick.piggieback/wrap-cljs-repl]}
               :env {:env "dev"}}
