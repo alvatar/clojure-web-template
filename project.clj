@@ -24,7 +24,7 @@
                  ;; Cljs
                  [reagent "0.8.0-alpha1"]
                  [datascript "0.16.2"]
-                 [posh "0.5.6"]]
+                 [posh "0.5.5"]]
 
   :plugins [[lein-cljsbuild "1.1.3"]
             [lein-environ "1.0.3"]
