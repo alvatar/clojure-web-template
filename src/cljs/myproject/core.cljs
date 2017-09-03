@@ -65,12 +65,15 @@
 ;;
 
 (defn app []
-  [:p (str "HELLO "
-           @(p/q '[:find ?n .
-                   :where [?e]
-                   [?e :user/name ?n]]
-                 db-conn)
-           "!")])
+  [:section.section>div.container
+   [:h1.title
+    (str "HELLO "
+         @(p/q '[:find ?n .
+                 :where [?e]
+                 [?e :user/name ?n]]
+               db-conn)
+         "!")]
+   [:p.subtitle "Let's go!"]])
 
 (r/render [app] (js/document.getElementById "app"))
 
