@@ -87,7 +87,7 @@
                (wrap-defaults (assoc-in (if (env :production) secure-site-defaults site-defaults)
                                         [:params :keywordize] true))
                wrap-exceptions
-               (wrap-with-logger :debug println)
+               ;; (wrap-with-logger :debug println)
                wrap-gzip)
            {:port (Integer. (or port (env :port) 5000))
             :socket-address (if ip (new InetSocketAddress ip port))})))
