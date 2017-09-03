@@ -8,6 +8,7 @@
    [reagent.core :as r]
    [posh.reagent :as p]
    [datascript.core :as d]
+   [garden.core :refer [css]]
    ;; -----
    [myproject.utils :as utils :refer [log*]]
    [myproject.client :as client]))
@@ -64,6 +65,16 @@
 ;; UI Components
 ;;
 
+(def common-style
+  (css [:h1 {:font-weight "bold"}]))
+
+(defonce style-node
+  (let [node (js/document.createElement "style")]
+    (js/document.head.appendChild node)
+    node))
+
+(aset style-node "innerHTML" style)
+
 (defn app []
   [:section.section>div.container
    [:h1.title
@@ -74,6 +85,10 @@
                db-conn)
          "!")]
    [:p.subtitle "Let's go!"]])
+
+;;
+;; Init
+;;
 
 (r/render [app] (js/document.getElementById "app"))
 
