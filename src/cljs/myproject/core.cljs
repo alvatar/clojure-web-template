@@ -9,7 +9,9 @@
    [posh.reagent :as p]
    [datascript.core :as d]
    [garden.core :refer [css]]
+   [goog.style]
    ;; -----
+   [myproject.globals :as globals :refer [db-conn display-type]]
    [myproject.utils :as utils :refer [log*]]
    [myproject.client :as client]))
 
@@ -18,31 +20,6 @@
 
 (enable-console-print!)
 (timbre/set-level! :debug)
-
-;;
-;; UI globals
-;;
-
-(def db-schema {})
-(def db-conn (d/create-conn db-schema))
-(p/posh! db-conn)
-
-(d/transact! db-conn
-             [{:user/name "Alvatar"}])
-
-;;
-;; Utils
-;;
-
-(defn clj->json [ds] (.stringify js/JSON (clj->js ds)))
-
-;;
-;; Sente
-;;
-
-(defonce router_ (atom nil))
-
-(declare event-msg-handler)
 
 ;;
 ;; Event Handlers
@@ -65,15 +42,13 @@
 ;; UI Components
 ;;
 
-(def common-style
+(def styles
   (css [:h1 {:font-weight "bold"}]))
 
-(defonce style-node
-  (let [node (js/document.createElement "style")]
-    (js/document.head.appendChild node)
-    node))
-
-(aset style-node "innerHTML" style)
+(defonce style-node (atom nil))
+(if @style-node
+  (goog.style/setStyles @style-node styles)
+  (reset! style-node (goog.style/installStyles styles)))
 
 (defn app []
   [:section.section>div.container
