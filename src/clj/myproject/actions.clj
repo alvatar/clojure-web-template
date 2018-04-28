@@ -1,10 +1,9 @@
 (ns myproject.actions
-  (:gen-class)
   (:require [clojure.pprint :refer [pprint]]
             ;; Environment and configuration
             [environ.core :refer [env]]
             [taoensso.sente :as sente]
-            [taoensso.sente.server-adapters.aleph :refer (get-sch-adapter)]
+            [taoensso.sente.server-adapters.aleph :refer [get-sch-adapter]]
             [taoensso.sente.packers.transit :as sente-transit]))
 
 ;;

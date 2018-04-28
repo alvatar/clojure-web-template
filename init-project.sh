@@ -13,7 +13,7 @@ lein clean
 
 printf "Renaming to: %s...\n" $1 
 
-#find . -type f | xargs sed -i "s/myproject/$NEW_NAME/g"
+find . -type f | xargs gsed -i "s/myproject/$NEW_NAME/g"
 for i in $(find . -type d -iname "*myproject*")
 do
   echo "$i"

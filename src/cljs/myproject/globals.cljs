@@ -1,23 +1,9 @@
-(ns myproject.globals
-  (:require
-   [datascript.core :as d]
-   [posh.reagent :as p]))
+(ns myproject.globals)
 
 (goog-define *server-ip* "127.0.0.1")
 
 (goog-define *env* "dev")
 (goog-define *enable-mobile-dev* true)
-
-;;
-;; Database
-;;
-
-(def db-schema {})
-(def db-conn (d/create-conn db-schema))
-(p/posh! db-conn)
-
-(d/transact! db-conn
-             [{:user/name "Alvatar"}])
 
 ;;
 ;; UI

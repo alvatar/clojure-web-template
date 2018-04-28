@@ -1,17 +1,15 @@
 (ns myproject.core
   (:require
-   [taoensso.encore :as encore :refer-macros (have have?)]
-   [taoensso.timbre :as timbre :refer-macros (tracef debugf infof warnf errorf)]
-   [cljs.core.async :as async :refer (<! >! put! take! chan)]
-   [taoensso.sente :as sente :refer (cb-success?)]
+   [taoensso.encore :as encore :refer-macros [have have?]]
+   [taoensso.timbre :as timbre :refer-macros [tracef debugf infof warnf errorf]]
+   [cljs.core.async :as async :refer [<! >! put! take! chan]]
+   [taoensso.sente :as sente :refer [cb-success?]]
    [taoensso.sente.packers.transit :as sente-transit]
-   [reagent.core :as r]
-   [posh.reagent :as p]
-   [datascript.core :as d]
+   [rum.core :as r]
    [garden.core :refer [css]]
    [goog.style]
    ;; -----
-   [myproject.globals :as globals :refer [db-conn display-type]]
+   [myproject.globals :as globals :refer [display-type]]
    [myproject.utils :as utils :refer [log*]]
    [myproject.client :as client]))
 
@@ -50,21 +48,15 @@
   (goog.style/setStyles @style-node styles)
   (reset! style-node (goog.style/installStyles styles)))
 
-(defn app []
+(r/defc app []
   [:section.section>div.container
-   [:h1.title
-    (str "HELLO "
-         @(p/q '[:find ?n .
-                 :where [?e]
-                 [?e :user/name ?n]]
-               db-conn)
-         "!")]
+   [:h1.title "HELLO"]
    [:p.subtitle "Let's go!"]])
 
 ;;
 ;; Init
 ;;
 
-(r/render [app] (js/document.getElementById "app"))
+(r/mount (app) (js/document.getElementById "app"))
 
 (client/start-router!)

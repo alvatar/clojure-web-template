@@ -4,35 +4,35 @@
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
 
-  :dependencies [[org.clojure/clojure "1.8.0"]
-                 [org.clojure/clojurescript "1.9.908" :scope "provided"]
+  :dependencies [[org.clojure/clojure "1.9.0"]
+                 [org.clojure/clojurescript "1.10.126"]
                  [com.cognitect/transit-clj "0.8.300"]
-                 [com.cognitect/transit-cljs "0.8.239"]
+                 [com.cognitect/transit-cljs "0.8.243"]
                  [environ "1.1.0"]
-                 [ring "1.6.2"]
+                 [ring "1.6.3"]
                  [ring/ring-defaults "0.3.1"]
-                 [bk/ring-gzip "0.2.1"]
-                 [ring.middleware.logger "0.5.0"]
-                 [aleph "0.4.3"]
+                 [bk/ring-gzip "0.3.0"]
+                 [prone "1.5.0"]
+                 [aleph "0.4.4"]
                  [compojure "1.6.0"]
-                 [com.taoensso/encore "2.92.0"]
-                 [com.taoensso/sente "1.11.0"]
+                 [com.taoensso/encore "2.94.0"]
+                 [com.taoensso/sente "1.12.0"]
                  [com.taoensso/timbre "4.10.0"]
                  ;; Database
-                 [org.clojure/java.jdbc "0.7.1"]
-                 [org.postgresql/postgresql "42.1.4"]
+                 [org.clojure/java.jdbc "0.7.5"]
+                 [org.postgresql/postgresql "42.2.1"]
                  ;; HTML
                  [hiccup "1.0.5"]
-                 [garden "1.3.2"]
+                 [garden "1.3.4"]
                  ;; Cljs
-                 [reagent "0.8.0-alpha1"]
-                 [datascript "0.16.2"]
-                 [posh "0.5.5"]]
+                 [rum "0.11.2"]]
 
-  :plugins [[lein-cljsbuild "1.1.3"]
-            [lein-environ "1.0.3"]]
+  :plugins [[lein-cljsbuild "1.1.7"]
+            [lein-environ "1.1.0"]]
 
-  :min-lein-version "2.6.1"
+  :jvm-opts ["--add-modules" "java.xml.bind"]
+  
+  :min-lein-version "2.7.1"
 
   :source-paths ["src/clj" "src/cljs" "src/cljc"]
 
@@ -57,22 +57,22 @@
                 ;; Alternatively, you can configure a function to run every time figwheel reloads.
                 ;; :figwheel {:on-jsload "myproject.core/on-figwheel-reload"}
                 :compiler {:main myproject.core
-                           :asset-path "js/compiled/out"
-                           :output-to "resources/public/js/compiled/myproject.js"
-                           :output-dir "resources/public/js/compiled/out"
+                           :asset-path "js/out"
+                           :output-to "resources/public/js/myproject.js"
+                           :output-dir "resources/public/js/out"
                            :source-map-timestamp true}}
                {:id "test"
                 :source-paths ["src/cljs" "test/cljs" "src/cljc" "test/cljc"]
-                :compiler {:output-to "resources/public/js/compiled/testable.js"
+                :compiler {:output-to "resources/public/js/testable.js"
                            :main myproject.test-runner
                            :optimizations :none}}
                {:id "min"
                 :source-paths ["src/cljs" "src/cljc"]
                 :jar true
                 :compiler {:main myproject.core
-                           :output-to "resources/public/js/compiled/myproject.js"
+                           :output-to "resources/public/js/myproject.js"
                            :output-dir "target"
-                           :source-map-timestamp true
+                           :source-map-timestamp false
                            :optimizations :advanced
                            :pretty-print false}}]}
   ;; When running figwheel from nREPL, figwheel will read this configuration
@@ -107,21 +107,21 @@
   :doo {:build "test"}
 
   :profiles {:dev
-             {:dependencies [[figwheel "0.5.13"]
-                             [figwheel-sidecar "0.5.13"]
+             {:dependencies [[figwheel "0.5.15"]
+                             [figwheel-sidecar "0.5.15"]
                              [com.cemerick/piggieback "0.2.2"]
                              [org.clojure/tools.nrepl "0.2.13"]
-                             [midje "1.8.3"]]
-              :plugins [[lein-figwheel "0.5.8"]
+                             [midje "1.9.1"]]
+              :plugins [[lein-figwheel "0.5.15"]
                         [lein-doo "0.1.6"]
-                        [lein-ancient "0.6.10"]
-                        [lein-midje "3.1.3"]]
+                        [lein-ancient "0.6.15"]
+                        [lein-midje "3.2.1"]]
               :source-paths ["dev"]
               :repl-options {:nrepl-middleware [cemerick.piggieback/wrap-cljs-repl]}
               :env {:env "dev"}}
              :test
-             {:dependencies [[midje "1.8.3"]]
-              :plugins [[lein-midje "3.1.3"]]
+             {:dependencies [[midje "1.9.1"]]
+              :plugins [[lein-midje "3.2.1"]]
               :env {:env "test"}}
              :uberjar
              {:source-paths ^:replace ["src/clj" "src/cljc"]

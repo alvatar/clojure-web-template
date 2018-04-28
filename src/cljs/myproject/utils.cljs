@@ -1,6 +1,6 @@
 (ns myproject.utils
-  (:require [taoensso.encore :as encore :refer-macros (have have?)]
-            [taoensso.timbre :as timbre :refer-macros (tracef debugf infof warnf errorf)]
+  (:require [taoensso.encore :as encore :refer-macros [have have?]]
+            [taoensso.timbre :as timbre :refer-macros [tracef debugf infof warnf errorf]]
             ;; -----
             [myproject.globals :as globals]))
 

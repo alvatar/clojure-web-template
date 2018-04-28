@@ -16,4 +16,4 @@
      [:link {:rel "stylesheet" :href "https://cdnjs.cloudflare.com/ajax/libs/gridlex/2.4.0/gridlex.min.css"}]]
     [:body
      [:div#app]
-     [:script {:src "js/compiled/myproject.js" :type "text/javascript"}]]]))
+     [:script {:src "js/myproject.js" :type "text/javascript"}]]]))

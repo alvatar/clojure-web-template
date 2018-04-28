@@ -5,7 +5,6 @@
             ;; Ring
             [ring.middleware.defaults :refer [wrap-defaults api-defaults]]
             [ring.middleware.gzip :refer [wrap-gzip]]
-            [ring.middleware.logger :refer [wrap-with-logger]]
             ;; Compojure
             [compojure.core :refer [ANY GET PUT POST DELETE defroutes]]
             [compojure.route :refer [resources not-found]]
@@ -18,13 +17,13 @@
             [aleph [netty] [http]]
             [compojure.route :as route]
             [taoensso.sente :as sente]
-            [taoensso.sente.server-adapters.aleph :refer (get-sch-adapter)]
+            [taoensso.sente.server-adapters.aleph :refer [get-sch-adapter]]
             [taoensso.sente.packers.transit :as sente-transit]
             ;; Internal
             [myproject.actions :as actions]
             [myproject.html :as html])
-  (:import (java.lang.Integer)
-           (java.net InetSocketAddress))
+  (:import [java.lang.Integer]
+           [java.net InetSocketAddress])
   (:gen-class))
 
 
@@ -79,8 +78,6 @@
 
 (defonce server (atom nil))
 
-(onelog.core/set-debug!)
-
 (defn start! [& [port ip]]
   (log/set-level! :debug)
   (actions/start-sente-router! ch-chsk)
@@ -90,7 +87,6 @@
                (wrap-defaults (assoc-in (if (env :production) secure-site-defaults site-defaults)
                                         [:params :keywordize] true))
                wrap-exceptions
-               ;; (wrap-with-logger :debug println)
                wrap-gzip)
            {:port (Integer. (or port (env :port) 5000))
             :socket-address (if ip (new InetSocketAddress ip port))})))
