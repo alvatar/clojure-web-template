@@ -14,6 +14,7 @@
             ;; Web
             [ring.middleware.defaults :refer :all]
             [ring.middleware.stacktrace :as trace]
+            [prone.middleware :as prone]
             [aleph [netty] [http]]
             [compojure.route :as route]
             [taoensso.sente :as sente]
@@ -55,26 +56,26 @@
 ;; Middleware
 ;;
 
-(defn wrap-exceptions [app]
-  "Ring wrapper providing exception capture"
-  (let [wrap-error-page
-        (fn [handler]
-          (fn [req]
-            (try (handler req)
-                 (catch Exception e
-                   (try (do (print-stack-trace e 20)
-                            (println "== From request: ==")
-                            (pprint req))
-                        (catch Exception e2
-                          (println "Exception trying to log exception?")))
-                   {:status 500
-                    :headers {"Content-Type" "text/plain"}
-                    :body "500 Internal Error."}))))]
-    ((if (or (env :production)
-             (env :staging))
-       wrap-error-page
-       trace/wrap-stacktrace)
-     app)))
+;; (defn wrap-exceptions [app]
+;;   "Ring wrapper providing exception capture"
+;;   (let [wrap-error-page
+;;         (fn [handler]
+;;           (fn [req]
+;;             (try (handler req)
+;;                  (catch Exception e
+;;                    (try (do (print-stack-trace e 20)
+;;                             (println "== From request: ==")
+;;                             (pprint req))
+;;                         (catch Exception e2
+;;                           (println "Exception trying to log exception?")))
+;;                    {:status 500
+;;                     :headers {"Content-Type" "text/plain"}
+;;                     :body "500 Internal Error."}))))]
+;;     ((if (or (env :production)
+;;              (env :staging))
+;;        wrap-error-page
+;;        trace/wrap-stacktrace)
+;;      app)))
 
 (defonce server (atom nil))
 
@@ -86,7 +87,8 @@
            (-> app
                (wrap-defaults (assoc-in (if (env :production) secure-site-defaults site-defaults)
                                         [:params :keywordize] true))
-               wrap-exceptions
+               ;;wrap-exceptions
+               prone/wrap-exceptions
                wrap-gzip)
            {:port (Integer. (or port (env :port) 5000))
             :socket-address (if ip (new InetSocketAddress ip port))})))

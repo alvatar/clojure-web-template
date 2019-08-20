@@ -5,7 +5,7 @@
    [cljs.core.async :as async :refer [<! >! put! take! chan]]
    [taoensso.sente :as sente :refer [cb-success?]]
    [taoensso.sente.packers.transit :as sente-transit]
-   [rum.core :as r]
+   [reagent.core :as r]
    [garden.core :refer [css]]
    [goog.style]
    ;; -----
@@ -48,7 +48,7 @@
   (goog.style/setStyles @style-node styles)
   (reset! style-node (goog.style/installStyles styles)))
 
-(r/defc app []
+(defn app []
   [:section.section>div.container
    [:h1.title "HELLO"]
    [:p.subtitle "Let's go!"]])
@@ -57,6 +57,6 @@
 ;; Init
 ;;
 
-(r/mount (app) (js/document.getElementById "app"))
+(r/render [app] (js/document.getElementById "app"))
 
 (client/start-router!)

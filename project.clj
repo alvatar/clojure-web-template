@@ -25,7 +25,7 @@
                  [hiccup "1.0.5"]
                  [garden "1.3.9"]
                  ;; Cljs
-                 [rum "0.11.3"]]
+                 [reagent "0.8.1"]]
 
   :plugins [[lein-cljsbuild "1.1.7"]
             [lein-environ "1.1.0" :hooks false]]
