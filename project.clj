@@ -4,35 +4,35 @@
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
 
-  :dependencies [[org.clojure/clojure "1.9.0"]
-                 [org.clojure/clojurescript "1.10.126"]
-                 [com.cognitect/transit-clj "0.8.300"]
-                 [com.cognitect/transit-cljs "0.8.243"]
+  :dependencies [[org.clojure/clojure "1.10.1"]
+                 [org.clojure/clojurescript "1.10.520"]
+                 [com.cognitect/transit-clj "0.8.313"]
+                 [com.cognitect/transit-cljs "0.8.256"]
                  [environ "1.1.0"]
-                 [ring "1.6.3"]
-                 [ring/ring-defaults "0.3.1"]
+                 [ring "1.7.1"]
+                 [ring/ring-defaults "0.3.2"]
                  [bk/ring-gzip "0.3.0"]
-                 [prone "1.5.0"]
-                 [aleph "0.4.4"]
-                 [compojure "1.6.0"]
-                 [com.taoensso/encore "2.94.0"]
-                 [com.taoensso/sente "1.12.0"]
+                 [prone "2019-07-08"]
+                 [aleph "0.4.6"]
+                 [compojure "1.6.1"]
+                 [com.taoensso/encore "2.115.0"]
+                 [com.taoensso/sente "1.13.1"]
                  [com.taoensso/timbre "4.10.0"]
                  ;; Database
-                 [org.clojure/java.jdbc "0.7.5"]
-                 [org.postgresql/postgresql "42.2.1"]
+                 [org.clojure/java.jdbc "0.7.9"]
+                 [org.postgresql/postgresql "42.2.6"]
                  ;; HTML
                  [hiccup "1.0.5"]
-                 [garden "1.3.4"]
+                 [garden "1.3.9"]
                  ;; Cljs
-                 [rum "0.11.2"]]
+                 [rum "0.11.3"]]
 
   :plugins [[lein-cljsbuild "1.1.7"]
-            [lein-environ "1.1.0"]]
+            [lein-environ "1.1.0" :hooks false]]
 
-  :jvm-opts ["--add-modules" "java.xml.bind"]
-  
-  :min-lein-version "2.7.1"
+  ;;:jvm-opts ["--add-modules" "java.xml.bind"]
+
+  :min-lein-version "2.9.0"
 
   :source-paths ["src/clj" "src/cljs" "src/cljc"]
 
@@ -107,20 +107,20 @@
   :doo {:build "test"}
 
   :profiles {:dev
-             {:dependencies [[figwheel "0.5.15"]
-                             [figwheel-sidecar "0.5.15"]
-                             [com.cemerick/piggieback "0.2.2"]
+             {:dependencies [[figwheel "0.5.19"]
+                             [figwheel-sidecar "0.5.19"]
+                             [cider/piggieback "0.4.1"]
                              [org.clojure/tools.nrepl "0.2.13"]
-                             [midje "1.9.1"]]
-              :plugins [[lein-figwheel "0.5.15"]
-                        [lein-doo "0.1.6"]
+                             [midje "1.9.9"]]
+              :plugins [[lein-figwheel "0.5.19"]
+                        [lein-doo "0.1.11"]
                         [lein-ancient "0.6.15"]
                         [lein-midje "3.2.1"]]
               :source-paths ["dev"]
-              :repl-options {:nrepl-middleware [cemerick.piggieback/wrap-cljs-repl]}
+              :repl-options {:nrepl-middleware [cider.piggieback/wrap-cljs-repl]}
               :env {:env "dev"}}
              :test
-             {:dependencies [[midje "1.9.1"]]
+             {:dependencies [[midje "1.9.9"]]
               :plugins [[lein-midje "3.2.1"]]
               :env {:env "test"}}
              :uberjar

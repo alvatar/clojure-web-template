@@ -14,7 +14,7 @@
    [myproject.client :as client]))
 
 
-(goog-define *is-dev* false)
+(goog-define ^:dynamic *is-dev* false)
 
 (enable-console-print!)
 (timbre/set-level! :debug)

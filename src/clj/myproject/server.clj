@@ -22,8 +22,8 @@
             ;; Internal
             [myproject.actions :as actions]
             [myproject.html :as html])
-  (:import [java.lang.Integer]
-           [java.net InetSocketAddress])
+  (:import java.lang.Integer
+           java.net.InetSocketAddress)
   (:gen-class))
 
 
