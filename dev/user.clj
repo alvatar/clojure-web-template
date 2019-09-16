@@ -13,14 +13,14 @@
 
 (def http-handler (wrap-reload #'myproject.core/app))
 
-(defn start-less []
-  (future
-    (println "Starting less.")
-    (clojure.java.shell/sh "lein" "less" "auto")))
+;; (defn start-less []
+;;   (future
+;;     (println "Starting less.")
+;;     (clojure.java.shell/sh "lein" "less" "auto")))
 
 (defn run []
+  ;; (start-less)
   (figwheel/start-figwheel!)
-  (start-less)
   (def system (myproject.core/system))
   (alter-var-root #'system component/start)
   (in-ns 'myproject.core))

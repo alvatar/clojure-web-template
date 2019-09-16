@@ -34,7 +34,8 @@
                  [garden "1.3.9"]
                  ;; Cljs
                  [binaryage/devtools "0.9.10"]
-                 [rum "0.11.3"]]
+                 [rum "0.11.3"]
+                 [antizer "0.3.1"]]
 
   :plugins [[lein-cljsbuild "1.1.7"]
             [lein-environ "1.1.0" :hooks false]]

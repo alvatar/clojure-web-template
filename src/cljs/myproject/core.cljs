@@ -5,6 +5,7 @@
    [cljs.core.async :as async :refer [<! >! put! take! chan]]
    [taoensso.sente :as sente :refer [cb-success?]]
    [taoensso.sente.packers.transit :as sente-transit]
+   [antizer.rum :as ant]
    [rum.core :as rum]
    [garden.core :refer [css]]
    [goog.style]
@@ -51,6 +52,7 @@
 (rum/defc app []
   [:section.section>div.container
    [:h1.title "HELLO"]
+   (ant/button {:on-click #(ant/message-info "Hello Rum!")} "Click me")
    [:p.subtitle "Let's go!"]])
 
 ;;
