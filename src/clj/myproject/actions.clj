@@ -33,19 +33,3 @@
   [{:as ev-msg :keys [event id ?data ring-req ?reply-fn send-fn]}]
   (?reply-fn {:status :ok
               :received-data ?data}))
-
-;;
-;; Sente event router (`event-msg-handler` loop)
-;;
-
-(defonce router_ (atom nil))
-
-(defn stop-sente-router! [] (when-let [stop-fn @router_] (stop-fn)))
-
-(defn start-sente-router! [ch-chsk]
-  (stop-sente-router!)
-  (reset! router_
-          (sente/start-server-chsk-router!
-           ch-chsk
-           event-msg-handler)))
-

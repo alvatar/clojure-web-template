@@ -2,7 +2,8 @@
   (:require [ring.middleware.reload :refer [wrap-reload]]
             [figwheel-sidecar.repl-api :as figwheel]
             [clojure.java.shell]
-            [myproject.server]))
+            [com.stuartsierra.component :as component]
+            [myproject.core]))
 
 ;; Let Clojure warn you when it needs to reflect on types, or when it does math
 ;; on unboxed numbers. In both cases you should add type annotations to prevent
@@ -10,8 +11,7 @@
 (set! *warn-on-reflection* true)
 (set! *unchecked-math* :warn-on-boxed)
 
-(def http-handler
-  (wrap-reload #'myproject.server/app))
+(def http-handler (wrap-reload #'myproject.core/app))
 
 (defn start-less []
   (future
@@ -21,8 +21,13 @@
 (defn run []
   (figwheel/start-figwheel!)
   (start-less)
-  (myproject.server/stop!)
-  (myproject.server/start!)
-  (in-ns 'myproject.server))
+  (def system (myproject.core/system))
+  (alter-var-root #'system component/start)
+  (in-ns 'myproject.core))
+
+;; To stop
+;; (component/stop user/system)
+;; To restart
+;; (component/start user/system)
 
 (def browser-repl figwheel/cljs-repl)

@@ -1,7 +1,8 @@
-(ns myproject.server
+(ns myproject.core
   (:require [clojure.java.io :as io]
             [clojure.stacktrace :refer [print-stack-trace]]
             [clojure.pprint :refer [pprint]]
+            [com.stuartsierra.component :as component]
             ;; Ring
             [ring.middleware.defaults :refer [wrap-defaults api-defaults]]
             [ring.middleware.gzip :refer [wrap-gzip]]
@@ -28,15 +29,20 @@
   (:gen-class))
 
 
+(log/set-level! :debug)
+
+;;
 ;; Sente setup
+;;
+
 (let [packer (sente-transit/get-transit-packer)
       {:keys [ch-recv send-fn connected-uids
               ajax-post-fn ajax-get-or-ws-handshake-fn]}
       (sente/make-channel-socket! (get-sch-adapter) {:packer packer})]
   (def ring-ajax-post ajax-post-fn)
   (def ring-ajax-get-or-ws-handshake ajax-get-or-ws-handshake-fn)
-  (def ch-chsk ch-recv) ; ChannelSocket's receive channel
-  (def chsk-send! send-fn) ; ChannelSocket's send API fn
+  (def ch-chsk ch-recv)              ; ChannelSocket's receive channel
+  (def chsk-send! send-fn)           ; ChannelSocket's send API fn
   (def connected-uids connected-uids))
 
 (defn user-home [req]
@@ -53,52 +59,55 @@
   (not-found "Woooot? Not found!"))
 
 ;;
-;; Middleware
+;; HTTP Server
 ;;
 
-;; (defn wrap-exceptions [app]
-;;   "Ring wrapper providing exception capture"
-;;   (let [wrap-error-page
-;;         (fn [handler]
-;;           (fn [req]
-;;             (try (handler req)
-;;                  (catch Exception e
-;;                    (try (do (print-stack-trace e 20)
-;;                             (println "== From request: ==")
-;;                             (pprint req))
-;;                         (catch Exception e2
-;;                           (println "Exception trying to log exception?")))
-;;                    {:status 500
-;;                     :headers {"Content-Type" "text/plain"}
-;;                     :body "500 Internal Error."}))))]
-;;     ((if (or (env :production)
-;;              (env :staging))
-;;        wrap-error-page
-;;        trace/wrap-stacktrace)
-;;      app)))
+(defn- new-server [ip port]
+  (aleph.http/start-server
+   (-> app
+       prone/wrap-exceptions
+       (wrap-defaults (assoc-in (if (env :production) secure-site-defaults site-defaults)
+                                [:params :keywordize] true))
+       wrap-gzip)
+   {:port (Integer. (or port (env :port) 5000))
+    :socket-address (when ip (new InetSocketAddress ip port))}))
 
-(defonce server (atom nil))
+(defrecord Server [aleph ip port]
+  component/Lifecycle
+  (start [this]
+    (let [a (new-server ip port)]
+      (println "Server started.")
+      (assoc this :aleph a)))
+  (stop [this]
+    (.close (:aleph this))
+    (println "Server closed.")
+    (assoc this :aleph nil)))
 
-(defn start! [& [port ip]]
-  (log/set-level! :debug)
-  (actions/start-sente-router! ch-chsk)
-  (reset! server
-          (aleph.http/start-server
-           (-> app
-               (wrap-defaults (assoc-in (if (env :production) secure-site-defaults site-defaults)
-                                        [:params :keywordize] true))
-               ;;wrap-exceptions
-               prone/wrap-exceptions
-               wrap-gzip)
-           {:port (Integer. (or port (env :port) 5000))
-            :socket-address (if ip (new InetSocketAddress ip port))})))
+;;
+;; Sente Websockets event router (`event-msg-handler` loop)
+;;
 
-(defn stop! []
-  (when @server
-    (.close @server)
-    (reset! server nil)
-    'stopped))
+(defrecord WebsocketsRouter [sente]
+  component/Lifecycle
+  (start [this]
+    (assoc this
+           :sente
+           (sente/start-server-chsk-router! ch-chsk actions/event-msg-handler)))
+  (stop [this]
+    ((:sente this))
+    (assoc this :sente nil)))
+
+;;
+;; System (puts together the components)
+;;
+
+(defn system [& [config-options]]
+  (let [{:keys [ip port]} config-options]
+    (component/system-map
+     :server (Server. nil ip port)
+     :websockets-router (WebsocketsRouter. nil))))
 
 (defn -main [& [port ip]]
-  (start! port ip)
-  (aleph.netty/wait-for-close @server))
+  (let [s (system {:ip ip :port port})]
+    (component/start s)
+    (aleph.netty/wait-for-close (get-in s [:server :aleph]))))

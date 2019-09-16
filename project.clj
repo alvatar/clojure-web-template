@@ -6,26 +6,35 @@
 
   :dependencies [[org.clojure/clojure "1.10.1"]
                  [org.clojure/clojurescript "1.10.520"]
-                 [com.cognitect/transit-clj "0.8.313"]
-                 [com.cognitect/transit-cljs "0.8.256"]
+                 ;; Architecture
+                 [com.stuartsierra/component "0.4.0"]
                  [environ "1.1.0"]
+                 ;; Core
+                 [com.taoensso/encore "2.115.0"]
+                 [com.taoensso/timbre "4.10.0"]
+                 ;; [com.rpl/specter "1.1.2"] ; Immutable data structure manipulation
+                 ;; [diehard "0.8.4"] ; Flexible retry, circuit breaker and rate limiter
+                 ;; [traversy "0.5.0"] ; Simply put, multilenses are generalisations of sequence and update-in
+                 ;; Data format
+                 [com.cognitect/transit-clj "0.8.319"]
+                 [com.cognitect/transit-cljs "0.8.256"]
+                 ;; Web
                  [ring "1.7.1"]
                  [ring/ring-defaults "0.3.2"]
                  [bk/ring-gzip "0.3.0"]
                  [prone "2019-07-08"]
                  [aleph "0.4.6"]
                  [compojure "1.6.1"]
-                 [com.taoensso/encore "2.115.0"]
                  [com.taoensso/sente "1.13.1"]
-                 [com.taoensso/timbre "4.10.0"]
                  ;; Database
-                 [org.clojure/java.jdbc "0.7.9"]
-                 [org.postgresql/postgresql "42.2.6"]
+                 [org.clojure/java.jdbc "0.7.10"]
+                 [org.postgresql/postgresql "42.2.8"]
                  ;; HTML
                  [hiccup "1.0.5"]
                  [garden "1.3.9"]
                  ;; Cljs
-                 [reagent "0.8.1"]]
+                 [binaryage/devtools "0.9.10"]
+                 [rum "0.11.3"]]
 
   :plugins [[lein-cljsbuild "1.1.7"]
             [lein-environ "1.1.0" :hooks false]]
@@ -40,10 +49,10 @@
 
   :clean-targets ^{:protect false} [:target-path :compile-path "resources/public/js"]
 
-  :uberjar-name "myproject-server.jar"
+  :uberjar-name "myproject.jar"
 
   ;; Use `lein run` if you just want to start a HTTP server, without figwheel
-  :main myproject.server
+  :main myproject.core
 
   ;; nREPL by default starts in the :main namespace, we want to start in `user`
   ;; because that's where our development helper functions like (run) and
@@ -57,10 +66,16 @@
                 ;; Alternatively, you can configure a function to run every time figwheel reloads.
                 ;; :figwheel {:on-jsload "myproject.core/on-figwheel-reload"}
                 :compiler {:main myproject.core
+                           :preloads [devtools.preload]
+                           :external-config {:devtools/config
+                                             {:features-to-install [:formatters :hints :async]
+                                              :fn-symbol "F"
+                                              :print-config-overrides true}}
                            :asset-path "js/out"
                            :output-to "resources/public/js/myproject.js"
                            :output-dir "resources/public/js/out"
-                           :source-map-timestamp true}}
+                           :source-map-timestamp true}
+                }
                {:id "test"
                 :source-paths ["src/cljs" "test/cljs" "src/cljc" "test/cljc"]
                 :compiler {:output-to "resources/public/js/testable.js"
