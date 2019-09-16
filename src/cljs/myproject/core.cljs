@@ -15,6 +15,10 @@
    [myproject.client :as client]))
 
 
+;; TODO: Animations
+;; https://www.pluralsight.com/guides/animating-reactjs-component-render-ant-design
+;; https://github.com/react-component/tween-one
+
 (goog-define ^:dynamic *is-dev* false)
 
 (enable-console-print!)
