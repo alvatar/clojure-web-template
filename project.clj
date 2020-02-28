@@ -10,31 +10,31 @@
                  [com.stuartsierra/component "0.4.0"]
                  [environ "1.1.0"]
                  ;; Core
-                 [com.taoensso/encore "2.115.0"]
+                 [com.taoensso/encore "2.119.0"]
                  [com.taoensso/timbre "4.10.0"]
                  ;; [com.rpl/specter "1.1.2"] ; Immutable data structure manipulation
                  ;; [diehard "0.8.4"] ; Flexible retry, circuit breaker and rate limiter
                  ;; [traversy "0.5.0"] ; Simply put, multilenses are generalisations of sequence and update-in
                  ;; Data format
-                 [com.cognitect/transit-clj "0.8.319"]
+                 [com.cognitect/transit-clj "1.0.324"]
                  [com.cognitect/transit-cljs "0.8.256"]
                  ;; Web
-                 [ring "1.7.1"]
+                 [ring "1.8.0"]
                  [ring/ring-defaults "0.3.2"]
                  [bk/ring-gzip "0.3.0"]
-                 [prone "2019-07-08"]
+                 [prone "2020-01-17"]
                  [aleph "0.4.6"]
                  [compojure "1.6.1"]
-                 [com.taoensso/sente "1.13.1"]
+                 [com.taoensso/sente "1.15.0"]
                  ;; Database
-                 [org.clojure/java.jdbc "0.7.10"]
-                 [org.postgresql/postgresql "42.2.8"]
+                 [org.clojure/java.jdbc "0.7.11"]
+                 [org.postgresql/postgresql "42.2.10"]
                  ;; HTML
                  [hiccup "1.0.5"]
                  [garden "1.3.9"]
                  ;; Cljs
-                 [binaryage/devtools "0.9.10"]
-                 [rum "0.11.3"]
+                 [binaryage/devtools "1.0.0"]
+                 [rum "0.11.4"]
                  [antizer "0.3.1"]]
 
   :plugins [[lein-cljsbuild "1.1.7"]
@@ -125,19 +125,19 @@
   :profiles {:dev
              {:dependencies [[figwheel "0.5.19"]
                              [figwheel-sidecar "0.5.19"]
-                             [cider/piggieback "0.4.1"]
+                             [cider/piggieback "0.4.2"]
                              [org.clojure/tools.nrepl "0.2.13"]
                              [midje "1.9.9"]]
               :plugins [[lein-figwheel "0.5.19"]
                         [lein-doo "0.1.11"]
                         [lein-ancient "0.6.15"]
-                        [lein-midje "3.2.1"]]
+                        [lein-midje "3.2.2"]]
               :source-paths ["dev"]
               :repl-options {:nrepl-middleware [cider.piggieback/wrap-cljs-repl]}
               :env {:env "dev"}}
              :test
              {:dependencies [[midje "1.9.9"]]
-              :plugins [[lein-midje "3.2.1"]]
+              :plugins [[lein-midje "3.2.2"]]
               :env {:env "test"}}
              :uberjar
              {:source-paths ^:replace ["src/clj" "src/cljc"]

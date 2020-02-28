@@ -19,6 +19,9 @@
 ;; https://www.pluralsight.com/guides/animating-reactjs-component-render-ant-design
 ;; https://github.com/react-component/tween-one
 
+;; Convert JSX to Cljs
+;; https://github.com/madvas/jsx-to-clojurescript
+
 (goog-define ^:dynamic *is-dev* false)
 
 (enable-console-print!)
